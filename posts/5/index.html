@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Octocat’s homepage | Keep up to date on the latest features the platform teams is developing</title>
+<meta name="generator" content="Jekyll v4.3.2" />
+<meta property="og:title" content="Octocat’s homepage" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Keep up to date on the latest features the platform teams is developing" />
+<meta property="og:description" content="Keep up to date on the latest features the platform teams is developing" />
+<link rel="canonical" href="http://localhost:4000/posts/5/" />
+<meta property="og:url" content="http://localhost:4000/posts/5/" />
+<meta property="og:site_name" content="Octocat’s homepage" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Octocat’s homepage" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Keep up to date on the latest features the platform teams is developing","headline":"Octocat’s homepage","url":"http://localhost:4000/posts/5/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+    <script src="https://code.jquery.com/jquery-3.3.0.min.js" integrity="sha256-RTQy8VOmNlT6b2PIRur37p6JEBZUE7o8wPgMvu18MC4=" crossorigin="anonymous"></script>
+    <script src="/assets/js/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" integrity="sha256-3Jy/GbSLrg0o9y5Z5n1uw0qxZECH7C6OQpVBgNFYa0g=" crossorigin="anonymous"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+
+      <header>
+        <h1>Octocat's homepage</h1>
+        <p>Keep up to date on the latest features the platform teams is developing</p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="" class="button fork"><strong>View On GitHub</strong></a>
+        
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        
+
+
+
+<h1>Rails page caching for improved performance</h1>
+
+<p><p>In order to reduce the load on your server and allow more concurrent users to hit your website, you may use caching. There are many types of caching in Ruby on Rails, some of which are discussed in the guides. Some require the use of a dedicated caching service such as AWS’s Elasticache (memcache or redis). The minimum cost of one of those instances is the same as a t2 micro. If you are only running a simple Rails app, this service may not be worth it, especially since there is a simple method of caching that doesn’t cost anything extra and provides an immense speed boost in many situations. This is described in the Rails guides as page caching, and while it was removed the Rails core since Rails 4, there is still a handy gem that provide the same functionality called actionpack-page_caching. This caching creates a html only snapshot of your rails page, and allows it to be rendered by only Nginx or Apache, which should be much faster. I personally installed in on my own rails blog (this site) using the instructions and here are the results (I did this test with Apache Bench -&gt; I ran</p>
+
+<p>ab -n 1000 -c 100 http://localhost:3000/</p>
+
+<p>where 3000 is the local reverse forwarding port of my Nginx server</p>
+
+<p>Before this change, here are the results</p>
+</p>
+
+<p>Published on 15 Feb 2023 by Jonathan Weyermann</p>
+
+
+        <h2>Comments</h2>
+         
+        <p>
+        Don't judge...
+        </p>
+         
+        <p>
+        Are you sure this wasn't written by Chat GPT?
+        </p>
+        
+
+
+      </section>
+      <footer>
+        
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></small></p>
+      </footer>
+    </div>
+  </body>
+</html>

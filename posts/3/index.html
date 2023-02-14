@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Octocat’s homepage | Keep up to date on the latest features the platform teams is developing</title>
+<meta name="generator" content="Jekyll v4.3.2" />
+<meta property="og:title" content="Octocat’s homepage" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Keep up to date on the latest features the platform teams is developing" />
+<meta property="og:description" content="Keep up to date on the latest features the platform teams is developing" />
+<link rel="canonical" href="http://localhost:4000/posts/3/" />
+<meta property="og:url" content="http://localhost:4000/posts/3/" />
+<meta property="og:site_name" content="Octocat’s homepage" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Octocat’s homepage" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Keep up to date on the latest features the platform teams is developing","headline":"Octocat’s homepage","url":"http://localhost:4000/posts/3/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+    <script src="https://code.jquery.com/jquery-3.3.0.min.js" integrity="sha256-RTQy8VOmNlT6b2PIRur37p6JEBZUE7o8wPgMvu18MC4=" crossorigin="anonymous"></script>
+    <script src="/assets/js/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" integrity="sha256-3Jy/GbSLrg0o9y5Z5n1uw0qxZECH7C6OQpVBgNFYa0g=" crossorigin="anonymous"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+
+      <header>
+        <h1>Octocat's homepage</h1>
+        <p>Keep up to date on the latest features the platform teams is developing</p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="" class="button fork"><strong>View On GitHub</strong></a>
+        
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        
+
+
+
+<h1>Creating a PDF conversion tool using Serverless and Amplify </h1>
+
+<p><p>One of the easiest ways of creating a React app and actually deploying it is to use AWS Amplify. Amplify provides easy hooks into AWS services like Cognito (for authentication) and GraphQL (for database access). For this basic version of the application though, I’ll be limiting its use to the api gateway/lambda functionality and easy deployments to s3 and cloudfront it provides.</p>
+
+<p>This part of the tutorial will focus on the front end app. We require a backend that handles the conversion of pdfs into jpgs, handled by a separate lambda. The front end react app will upload a pdf to s3, and will download the finished jpgs.</p>
+
+<p>We need to build the app itself and create an api endpoint from aws that gives us a signed signature in order to be able to upload to the s3 bucket. This is the only write access the front end has to aws resources. It only permits writing pdfs to a specific bucket, and only if the url of the app matches previously accepted URLs. Otherwise a cross-origin error will occur. This prevents an app from any other location from writing to your bucket.</p>
+
+<p>Creating the React App</p>
+
+<p>Following the instructions on Amplify website, the first thing we do is to install Amplify ( https://aws-amplify.github.io/docs/ ) if we dont have it. Then we use to use create-react-app to create a new react app. We will follow steps 1 and 2 on the Amplify instructions site (https://aws-amplify.github.io/docs/js/start), as outlined below</p>
+
+<p>Step 1. Create a New App
+Use Create React App to bootstrap your application.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ npx create-react-app myapp
+$ cd myapp
+</code></pre></div></div>
+<p>Inside the app directory, install Amplify and run your app:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ npm install @aws-amplify/api @aws-amplify/pubsub
+$ npm start
+</code></pre></div></div>
+
+<p>To install React-specific Amplify UI components, run the following command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ npm install aws-amplify-react
+</code></pre></div></div>
+
+<p>See the React Guide for details and usage.</p>
+</p>
+
+<p>Published on 15 Feb 2023 by Jonathan Weyermann</p>
+
+
+        <h2>Comments</h2>
+         
+        <p>
+        Don't judge...
+        </p>
+        
+
+
+      </section>
+      <footer>
+        
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></small></p>
+      </footer>
+    </div>
+  </body>
+</html>

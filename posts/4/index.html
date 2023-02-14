@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Octocat’s homepage | Keep up to date on the latest features the platform teams is developing</title>
+<meta name="generator" content="Jekyll v4.3.2" />
+<meta property="og:title" content="Octocat’s homepage" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Keep up to date on the latest features the platform teams is developing" />
+<meta property="og:description" content="Keep up to date on the latest features the platform teams is developing" />
+<link rel="canonical" href="http://localhost:4000/posts/4/" />
+<meta property="og:url" content="http://localhost:4000/posts/4/" />
+<meta property="og:site_name" content="Octocat’s homepage" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Octocat’s homepage" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Keep up to date on the latest features the platform teams is developing","headline":"Octocat’s homepage","url":"http://localhost:4000/posts/4/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+    <script src="https://code.jquery.com/jquery-3.3.0.min.js" integrity="sha256-RTQy8VOmNlT6b2PIRur37p6JEBZUE7o8wPgMvu18MC4=" crossorigin="anonymous"></script>
+    <script src="/assets/js/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" integrity="sha256-3Jy/GbSLrg0o9y5Z5n1uw0qxZECH7C6OQpVBgNFYa0g=" crossorigin="anonymous"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+
+      <header>
+        <h1>Octocat's homepage</h1>
+        <p>Keep up to date on the latest features the platform teams is developing</p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="" class="button fork"><strong>View On GitHub</strong></a>
+        
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        
+
+
+
+<h1>This is part 3 of the PDF2JPG Conversion app </h1>
+
+<p><p>This is part 3 of the PDF2JPG Conversion app - part 2 can be found here.</p>
+
+<p>For this part of the project we will build a lambda that automatically processes uploaded pdfs. It first takes the pdf and turns each page into a jpg and eventually also creates a zip file out of all the jpgs.</p>
+
+<p>For this project, the lambda will be built as a trigger to the s3 bucket. If you would like more control about how the processing is initiated, you will need to find another way to trigger it.
+<img src="http://localhost:1337/uploads/Jonathan_1237ab77e7.jpg" alt="Jonathan.jpg" /></p>
+
+<p><img src="http://localhost:1337/uploads/jonathan_f478720823.gif" alt="jonathan.gif" /></p>
+
+<p>The lambda performs a number of tasks sequentially. First, it reads the pdf into the lambdas temporary storage. Then it uses GhostScript to convert the pdf into individual jpg images. It then uploads all of these to s3. After, it creates a file stream using each file and dumps it into a zip file that gets pushed right onto s3.</p>
+
+<p>We will go through the code for each of these steps</p>
+
+<p>Required Imports</p>
+
+<p>fs is for file operations, archive-promise exists to create a promise-returning zip archive, await-exec is there to do a promise returning exec - required to run ghostscript synchronously.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>const fs = require('fs');
+const archiver = require('archiver-promise');
+const path = require('path');
+const AWS = require('aws-sdk');
+const exec = require('await-exec')
+const stream = require('stream')
+require('events').EventEmitter.defaultMaxListeners = 100;
+</code></pre></div></div>
+
+<p>Reading in the pdf from s3</p>
+
+<p>We read in the file from S3 as a stream and save it to a temp file inside the lambda storage. Lambdas are provided up to 500mb of temporary storage, so this is great for our purpose.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>const grabPdfFromS3 = user =&gt; {
+  const S3 = new AWS.S3({ region: 'us-west-2' });
+  return new Promise((resolve, reject) =&gt; {
+    const destPath = `/tmp/${user}.pdf`
+    var params = {
+      Bucket: process.env.BUCKET,
+      Key: `pdfs/${user}.pdf`
+    }
+    S3.headObject(params)
+      .promise()
+      .then(() =&gt; {
+        const s3Stream = S3.getObject(params).createReadStream()
+        const fileStream = fs.createWriteStream(destPath);
+        s3Stream.on('error', reject);
+        fileStream.on('error', reject);
+        fileStream.on('close', () =&gt; { resolve(destPath);});
+        s3Stream.pipe(fileStream);
+      })
+      .catch(error =&gt; {
+        console.log(`grabfroms3error: ${error}`);
+        reject(error)
+      });
+  });
+};
+</code></pre></div></div>
+<p><strong>Saving a file to s3</strong></p>
+
+<p>The saveFileToS3 takes a single file object and saves it to s3. S3 doesn’t have an API command to upload multiple files, so each file has to be uploaded individually.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>const saveFileToS3 = (path,key) =&gt; {
+  const S3 = new AWS.S3({ region: 'us-west-2' });
+  return new Promise((resolve, reject) =&gt; {
+    fs.readFile(path, (err, data) =&gt; {
+      S3.putObject({
+        Bucket: process.env.BUCKET,
+        Key: `${key}`,
+        ContentType: data.type,
+        Body: data
+      }, (error) =&gt; {
+        if (error) {
+          console.log(`savetos3error: ${error}`);
+          reject(`savetos3error: ${path}`);
+        } else {
+          resolve(`success: saved ${path} to S3:${key}`);
+        }
+      });
+    });
+  });
+};
+</code></pre></div></div>
+
+<p>More stuff to come</p>
+</p>
+
+<p>Published on 15 Feb 2023 by Jonathan Weyermann</p>
+
+
+        <h2>Comments</h2>
+         
+        <p>
+        Don't judge...
+        </p>
+        
+
+
+      </section>
+      <footer>
+        
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></small></p>
+      </footer>
+    </div>
+  </body>
+</html>

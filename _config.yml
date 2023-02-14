@@ -1,0 +1,29 @@
+url: "" # the base hostname & protocol for your site, e.g. http://example.com
+baseurl: "" # the subpath of your site, e.g. /blog
+remote_theme: pages-themes/leap-day@v0.2.0
+plugins:
+  - jekyll-remote-theme # add this line to the plugins list if you already have one
+  - jekyll-feed
+  - jekyll-strapi-4
+  - jekyll-get-json
+title: Octocat's homepage
+description: Keep up to date on the latest features the platform teams is developing
+jekyll_get_json:
+  - data: posts
+    json: "http://localhost:1337/api/posts?populate=*"
+  - data: intros
+    json: "http://localhost:1337/api/intros"
+strapi:
+  # Your API endpoint (optional, default to http://localhost:1337)
+  endpoint: http://localhost:1337
+  # Collections, key is used to access in the strapi.collections
+  # template variable
+  collections:
+    posts:
+      # Collection name (optional). Used to construct the url requested. Example: type `foo` would generate the following url `http://localhost:1337/foo`.
+      type: posts
+      permalink: posts/:id/
+      layout: post.html
+      # Generate output files or not (default: false)
+      output: true
+      populate: "*"
